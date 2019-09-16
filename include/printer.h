@@ -12,4 +12,5 @@ void printInvaBus(int id, int addr);
 void printMissPenal(int id);
 const char* getState(int state);
 const char* getName(int addr);
+
 #endif

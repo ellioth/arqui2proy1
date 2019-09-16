@@ -9,7 +9,7 @@
 
 //constantes para la generacion de instrucciones
 #define MAX_INST 100
-#define ROT 0.005
+#define ROT 0.05
 #define PROC 0
 #define WRITE 1
 #define READ 2
@@ -252,9 +252,6 @@ void writeIntoCache(int addr, int data, int id){
 	PUs[id].kashe[Caddr].tag=tag;
 	PUs[id].kashe[Caddr].data=data;
 	pthread_mutex_unlock( &MTks);
-	/**if(state==M){
-		write(addr, MEM);//atrasar ************************
-	}*/
 	TDwrite(addr,data); //tabla de direcciones alterada
 	write(addr,data); //memoria alterada
 }
@@ -268,9 +265,6 @@ void writeIntoCache(int addr, int data, int id){
 int readData(int addr, int place, int id){
 	int Caddr=addr%8;
 	int tag=addr>>3;
-	/**if(state==M){
-		write(addr, (*tmp).data);//atrasar ************************
-	}*/
 	int data=-1, stall=0;
 	if(place==MEM){
 		data=read(addr);	//asking for the data in the memory	
@@ -309,9 +303,9 @@ void* startCPU(void * data){
 	for(int i=0; i<MAX_INST; i++){
 		//esperando a que el clock sea HIGH
 		checkingSClk(HIGH, 1);
-		printClean(id);
+		//printClean(id);
 		//extraemos el tipo de instruccion que es
-		int type=inst[i]%10; 
+		int type=inst[i]%10; 							//type=XXX[X];
 		if(type==PROC){
 			printProcess(id);
 			//esperar a que termine el ciclo.
@@ -325,7 +319,7 @@ void* startCPU(void * data){
 			es su estado
 		*/
 		int stall=1;
-		int addr=inst[i]/10;
+		int addr=inst[i]/10;							//addr=[XXX]X
 		int state=lookIntoCache(addr,id);
 		//preguntamos si es una escritura
 		if(type==WRITE){

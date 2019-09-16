@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
-#include "../include/clock.h"
 
 #define MEM 4
 
@@ -39,12 +38,4 @@ void initMem(){
 	for(int i=0; i<16; i++){
 		mem[i]=MEM;	
 	}
-	/*
-	pthread_t tMem;
-	int iret1 = pthread_create( &tMem, NULL, showMem,NULL);
-	 cheking if the first thread is created right 
-	if(iret1){
-		fprintf(stderr,"Error - pthread_create() return code: %d\n",iret1);
-		exit(EXIT_FAILURE);
-	}*/
 }
